@@ -6,5 +6,8 @@ data class WeatherInfo(
     val temperature: Double,
     val maxTemperature: Double,
     val minTemperature: Double,
-    val windSpeed: Double
+    val windSpeed: Double,
+    val description: String,
+    val iconWeather: String,
+    val today: String
 )

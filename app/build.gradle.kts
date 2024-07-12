@@ -129,6 +129,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation (libs.gson.v2110)
+    //Coil
+    implementation(libs.coil.kt.coil.compose)
 
     //Google Maps
     implementation(libs.maps.compose)

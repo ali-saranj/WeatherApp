@@ -3,6 +3,8 @@ package com.kasra.weather.ui.map
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.kasra.weather.data.location.LocationTracker
 import com.kasra.weather.data.model.WeatherInfo
 import com.kasra.weather.data.repository.IWeatherRepository
@@ -18,6 +20,10 @@ import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Map Screen.
+ * Handles fetching weather data based on the user's location and managing the UI state.
+ */
 @HiltViewModel
 class MapViewModel @OptIn(ExperimentalCoroutinesApi::class)
 @Inject constructor(
@@ -26,41 +32,60 @@ class MapViewModel @OptIn(ExperimentalCoroutinesApi::class)
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MapState())
-    val state = _state.asStateFlow()
+    val state = _state.asStateFlow()// Expose the state as a StateFlow
 
+    /**
+     * Handles different intents to trigger actions in the ViewModel.
+     *
+     * @param intent The intent representing the action to be performed.
+     */
     fun handleIntent(intent: MapIntent) {
         when (intent) {
             is MapIntent.LoadWeatherLocation -> loadWeatherLocation()
-            is MapIntent.ClickMarker -> clickMarker()
         }
     }
 
-    private fun clickMarker() = viewModelScope.launch {
-        _state.value = _state.value.copy(isShow = _state.value.isShow.not())
+    /**
+     * Shows the weather information card.*
+     * @param marker The marker that was clicked.
+     */
+    fun showCardWeather(marker: Marker) {
+        _state.value = _state.value.copy(isShow = true)
+    }
+    /**
+     * Hides the weather information card.
+     *
+     * @param latLng The LatLng of the map click (optional).
+     */
+    fun hideCardWeather(latLng: LatLng? = null) {
+        _state.value = _state.value.copy(isShow = false)
     }
 
+    /**
+     * Loads weather data for the current location.
+     * Updates the state with loading, success, or error status.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadWeatherLocation() = viewModelScope.launch {
-        _state.value = MapState(isLoading = true)
-        locationTracker.getCurrentLocation()?.let { location ->
+        _state.value = MapState(isLoading = true)// Set loading state
+        locationTracker.getCurrentLocation()?.let { location ->// Fetch weather data for the current location
             repository.getWeatherData(
                 lat = location.latitude.toString(),
                 lon = location.longitude.toString()
             )
                 .collectLatest {
                     when (it) {
-                        is Resource.Success -> {
+                        is Resource.Success -> { // Update state with weather data
                             _state.value =
                                 _state.value.copy(weatherInfo = it.data, isLoading = false)
                         }
 
-                        is Resource.Error -> {
+                        is Resource.Error -> {// Update state with error message
                             _state.value = _state.value.copy(error = it.message, isLoading = false)
                         }
                     }
                 }
         }
     }
-
 
 }
