@@ -1,6 +1,7 @@
 package com.kasra.weather.data.repository
 
 import com.kasra.weather.data.datasource.IWeatherDatasource
+import com.kasra.weather.data.datasource.IWeatherDatasourceImpl
 import com.kasra.weather.data.mappers.toWeather
 import com.kasra.weather.data.model.WeatherInfo
 import com.kasra.weather.data.util.Resource
@@ -15,8 +16,7 @@ import javax.inject.Inject
  * and exposes it as a [Flow] of [Resource] objects.
  */
 
-class IWeatherRepositoryImpl @Inject constructor(private val datasource: IWeatherDatasource) : IWeatherRepository {
-
+class IWeatherRepositoryImpl @Inject constructor(private val datasource: IWeatherDatasourceImpl) : IWeatherRepository {
 /**
  * Retrieves weather data for the given latitude and longitude as a [Flow] of [Resource].
  ** @param lat Latitude of the location.

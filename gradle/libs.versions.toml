@@ -15,6 +15,7 @@ androidxTestRunner = "1.5.2"
 converterGson = "2.11.0"
 coroutines = "1.8.1"
 gson = "2.11.1"
+gsonVersion = "2.11.0"
 hilt = "2.51.1"
 junit = "4.13.2"
 kotlin = "1.9.24"
@@ -49,6 +50,7 @@ androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "a
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+gson-v2110 = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }

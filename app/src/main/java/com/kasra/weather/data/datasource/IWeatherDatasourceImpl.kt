@@ -19,13 +19,21 @@ class IWeatherDatasourceImpl @Inject constructor(val api: IWeatherApi) : IWeathe
      * @return A [Result] object wrapping either the [WeatherDto] on success or a [Throwable] on failure.
      */
     override suspend fun getWeatherData(lat: String, lon: String): Resource<WeatherDto> {
-        val response = api.getWeatherData(lat, lon)
-        return if (response.isSuccessful) {
-            Resource.Success(response.body()!!)// Consider handling potential null response body
-        } else {
+        try {
+            val response = api.getWeatherData(lat, lon)
+            return if (response.isSuccessful) {
+                Resource.Success(response.body()!!)// Consider handling potential null response body
+            } else {
+                return Resource.Error(
+                    response.errorBody().toString()
+                ) // Consider more specific error handling
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
             return Resource.Error(
-                response.errorBody().toString()
+                e.message.toString()
             ) // Consider more specific error handling
         }
+
     }
 }

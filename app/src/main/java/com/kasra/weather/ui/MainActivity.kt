@@ -33,6 +33,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.kasra.weather.data.location.LocationTracker
+import com.kasra.weather.ui.map.MapScreen
 import dagger.hilt.android.AndroidEntryPoint
 import com.kasra.weather.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,21 +42,46 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Inject
-    lateinit var locationTracker: LocationTracker
-
-    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
+            RequestLocationPermission(
+                onPermissionGranted = {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Location permission granted",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onPermissionDenied = {
+                    // Some requested permissions are denied.
+                    // TODO: Implement appropriate action based on the user's decision.
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Location permission denied",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onPermissionsRevoked = {
+                    // Previously granted permissions are revoked.
+                    // TODO: Implement appropriate action based on the user's decision.
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Location permissions revoked",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-
+                    if (areLocationPermissionsGranted()) {
+                        MapScreen()
+                    }
                 }
             }
         }

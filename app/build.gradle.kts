@@ -128,6 +128,8 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation (libs.gson.v2110)
+
     //Google Maps
     implementation(libs.maps.compose)
     //location service
