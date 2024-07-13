@@ -34,6 +34,6 @@ Built with api.open-meteo.com API: [openweathermap](https://api.openweathermap.o
 
 <div align="center">
     <img src="Screenshot/Screenshot_20240713_191317.png?raw=true" width="300px height="300px"</img> 
-    <img src="Screenshot/Screenshot_20240713_191410.png.png?raw=true" width="300px height="300px"</img>
+    <img src="Screenshot/Screenshot_20240713_191410.png?raw=true" width="300px height="300px"</img>
 </div>
 
