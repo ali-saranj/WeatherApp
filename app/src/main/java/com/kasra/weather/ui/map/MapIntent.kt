@@ -5,5 +5,5 @@ package com.kasra.weather.ui.map
  */
 sealed class MapIntent {
     //Intent to load weather data for the current location.
-    data object LoadWeatherLocation : MapIntent()
+    data object LoadListCityInfo : MapIntent()
 }

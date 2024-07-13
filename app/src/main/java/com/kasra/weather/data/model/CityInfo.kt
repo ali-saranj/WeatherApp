@@ -1,6 +1,7 @@
 package com.kasra.weather.data.model
 
-data class WeatherInfo(
+data class CityInfo(
+    val city: String,
     val latitude: Double,
     val longitude: Double,
     val temperature: Double,

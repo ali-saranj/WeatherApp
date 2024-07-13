@@ -18,10 +18,12 @@ package com.kasra.weather.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -42,109 +44,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         setContent {
-            RequestLocationPermission(
-                onPermissionGranted = {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Location permission granted",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                onPermissionDenied = {
-                    // Some requested permissions are denied.
-                    // TODO: Implement appropriate action based on the user's decision.
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Location permission denied",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                onPermissionsRevoked = {
-                    // Previously granted permissions are revoked.
-                    // TODO: Implement appropriate action based on the user's decision.
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Location permissions revoked",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            )
+
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    if (areLocationPermissionsGranted()) {
-                        MapScreen()
-                    }
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Composable function to request location permissions and handle different scenarios.
-     *
-     * @param onPermissionGranted Callback to be executed when all requested permissions are granted.
-     * @param onPermissionDenied Callback to be executed when any requested permission is denied.
-     * @param onPermissionsRevoked Callback to be executed when previously granted permissions are revoked.
-     */
-    @OptIn(ExperimentalPermissionsApi::class)
-    @Composable
-    fun RequestLocationPermission(
-        onPermissionGranted: () -> Unit,
-        onPermissionDenied: () -> Unit,
-        onPermissionsRevoked: () -> Unit
-    ) {
-        // Initialize the state for managing multiple location permissions.
-        val permissionState = rememberMultiplePermissionsState(
-            listOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            )
-        )
-
-        // Use LaunchedEffect to handle permissions logic when the composition is launched.
-        LaunchedEffect(key1 = permissionState) {
-            // Check if all previously granted permissions are revoked.
-            val allPermissionsRevoked =
-                permissionState.permissions.size == permissionState.revokedPermissions.size
-
-            // Filter permissions that need to be requested.
-            val permissionsToRequest = permissionState.permissions.filter {
-                !it.status.isGranted
-            }
-
-            // If there are permissions to request, launch the permission request.
-            if (permissionsToRequest.isNotEmpty()) permissionState.launchMultiplePermissionRequest()
-
-            // Execute callbacks based on permission status.
-            if (allPermissionsRevoked) {
-                onPermissionsRevoked()
-            } else {
-                if (permissionState.allPermissionsGranted) {
-                    onPermissionGranted()
-                } else {
-                    onPermissionDenied()
+                    MapScreen()
                 }
             }
         }
     }
-
-    private fun areLocationPermissionsGranted(): Boolean {
-        return (ActivityCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED)
-    }
-
 }
-

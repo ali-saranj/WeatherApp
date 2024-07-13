@@ -1,13 +1,16 @@
 package com.kasra.weather.ui.map
 
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,44 +29,37 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.currentCameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import com.kasra.weather.data.model.CityInfo
 import com.kasra.weather.ui.component.CardWeather
 
-/**
- * Composable function representing the Map Screen.
- * It displays a map with a marker at the user's location and shows weatherinformation when the marker is clicked.
- *
- * @param viewModel The MapViewModel instance used to handle state and events.
- */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MapScreen(
     viewModel: MapViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
-    //Load weather location when the screen is launched
     LaunchedEffect(viewModel) {
-        viewModel.handleIntent(MapIntent.LoadWeatherLocation)
+        viewModel.handleIntent(MapIntent.LoadListCityInfo)
     }
 
-    // Display different content based on the state
     when {
-        state.isLoading -> { // Show a loading indicator while fetching data
+        state.isLoading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         }
 
-        state.error != null -> {// Display an error message if an error occurred
+        state.error != null -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(text = "Error: ${state.error}")
             }
         }
 
-        state.weatherInfo != null -> { // Display the map with a marker and weather information card
+        state.listCityInfo != null -> { // Display the map with a marker and weather information card
             MapContent(
-                latitude = state.weatherInfo!!.latitude,
-                longitude = state.weatherInfo!!.longitude,
-                onInfoWindowClick = viewModel::showCardWeather,
+                listCityInfo = state.listCityInfo!!,
+                onInfoWindowClick = {viewModel.showCardWeather(it)},
                 onMapClick = viewModel::hideCardWeather
             )
             // Animate the visibility of the weather card
@@ -74,8 +70,8 @@ fun MapScreen(
             ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CardWeather(
-                        weatherInfo = state.weatherInfo!!,
-                        backgroundColor = Color(0xFF009688),
+                        weatherInfo = state.cityInfo!!,
+                        backgroundColor = Color(0XFF88C0D0),
                         onClose = viewModel::hideCardWeather
                     )
                 }
@@ -84,42 +80,37 @@ fun MapScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "MapScreen")
 @Composable
 private fun PreviewMapScreen() {
     MapScreen()
 }
 
-/**
- * Composable function displaying the map content with a marker.
- *
- * @param latitude Latitude of the marker position.
- * @param longitude Longitude of the marker position.
- * @param onInfoWindowClick Callback to be executed when the marker's info window is clicked.
- * @param onMapClick Callback to be executed when the map is clicked.
- */
+
 @Composable
 fun MapContent(
-    latitude: Double,
-    longitude: Double,
-    onInfoWindowClick: (Marker) -> Unit,
+    listCityInfo: List<CityInfo>,
+    onInfoWindowClick: (CityInfo) -> Unit,
     onMapClick: (LatLng) -> Unit
 ) {
 
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
+            position = CameraPosition.fromLatLngZoom(LatLng(32.0, 53.0), 5f)
         },
         onMapClick = onMapClick
     ) {
-        // Place a marker at the specified location
-        Marker(
-            state = rememberMarkerState(position = LatLng(latitude, longitude)),
-            title = "your location",
-            snippet = "Click to get weather info",
-            onInfoWindowClick = onInfoWindowClick,
-        )
+        listCityInfo.forEach { cityInfo ->
+            Marker(
+                state = rememberMarkerState(position = LatLng(cityInfo.latitude, cityInfo.longitude)),
+                title = cityInfo.city,
+                snippet = cityInfo.description,
+                onInfoWindowClick = { onInfoWindowClick(cityInfo) }
+            )
+        }
+
     }
 }
 

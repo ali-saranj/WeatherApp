@@ -3,13 +3,9 @@ package com.kasra.weather.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherDto(
-    @SerializedName("base")
-    val base: String,
+data class CityDto(
     @SerializedName("clouds")
     val clouds: Clouds,
-    @SerializedName("cod")
-    val cod: Int,
     @SerializedName("coord")
     val coord: Coord,
     @SerializedName("dt")
@@ -22,8 +18,6 @@ data class WeatherDto(
     val name: String,
     @SerializedName("sys")
     val sys: Sys,
-    @SerializedName("timezone")
-    val timezone: Int,
     @SerializedName("visibility")
     val visibility: Int,
     @SerializedName("weather")

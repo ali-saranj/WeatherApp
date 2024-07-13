@@ -1,7 +1,7 @@
 package com.kasra.weather.data.datasource
 
 import com.kasra.weather.data.network.IWeatherApi
-import com.kasra.weather.data.network.model.WeatherDto
+import com.kasra.weather.data.network.model.CityDto
 import com.kasra.weather.data.util.Resource
 import javax.inject.Inject
 
@@ -14,15 +14,13 @@ class IWeatherDatasourceImpl @Inject constructor(val api: IWeatherApi) : IWeathe
     /**
      * Retrieves weather data for the given latitude and longitude.
      *
-     * @param lat Latitude of the location.
-     * @param lon Longitude of the location.
-     * @return A [Result] object wrapping either the [WeatherDto] on success or a [Throwable] on failure.
+     * @return A [Result] object wrapping either the [List of CityDto] on success or a [Throwable] on failure.
      */
-    override suspend fun getWeatherData(lat: String, lon: String): Resource<WeatherDto> {
+    override suspend fun getWeatherData(): Resource<List<CityDto>> {
         try {
-            val response = api.getWeatherData(lat, lon)
+            val response = api.getWeatherData()
             return if (response.isSuccessful) {
-                Resource.Success(response.body()!!)// Consider handling potential null response body
+                Resource.Success(response.body()!!.list)// Consider handling potential null response body
             } else {
                 return Resource.Error(
                     response.errorBody().toString()
