@@ -6,7 +6,7 @@ Compose.
 
 ## Description
 
-WeatherApp demonstrates effective utilization of Jetpack Compose and MVI architecture to create an interactive Android application that seamlessly integrates mapping and weather data functionalities. With its modular structure and use of modern Android development tools, WeatherApp provides a robust foundation for further development and enhancements.
+WeatherApp is an Android application built using Jetpack Compose and follows the Model-View-Intent (MVI) architecture pattern. It leverages Hilt for dependency injection and Retrofit for networking capabilities. The primary purpose of WeatherApp is to display weather information on a map for selected countries or cities, utilizing a free weather API.
 
 <br>
 <br>
