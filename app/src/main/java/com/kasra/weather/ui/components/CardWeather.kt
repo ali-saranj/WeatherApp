@@ -1,4 +1,4 @@
-package com.kasra.weather.ui.component
+package com.kasra.weather.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,17 +13,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,7 +39,7 @@ fun CardWeather(
     onClose: () -> Unit
 ) {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) ,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
@@ -69,7 +66,7 @@ fun CardWeather(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     textAlign = TextAlign.End,
                     text = weatherInfo.today,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     color = Color(0xFF2E3440)
                 )
             }
@@ -105,21 +102,51 @@ fun CardWeather(
                 Text(
                     text = "Max: ${weatherInfo.maxTemperature}°C",
                     fontSize = 20.sp,
-                    color = Color.Black
+                    color = Color(0xFF2E3440)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
                     text = "Min: ${weatherInfo.minTemperature}°C",
                     fontSize = 20.sp,
-                    color = Color(0xFF2E3440)
+                    color = Color(0xFF2E3440),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Wind: ${weatherInfo.windSpeed} m/s",
-                fontSize = 20.sp,
-                color = Color(0xFF2E3440)
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+            ) {
+                Text(
+                    text = "Wind: ${weatherInfo.windSpeed} m/s",
+                    fontSize = 20.sp,
+                    color = Color(0xFF2E3440)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Icon(
+                    modifier = Modifier.size(30.dp),
+                    painter = painterResource(id = R.drawable.wind_icon),
+                    contentDescription = "wind speed",
+                    tint = Color(0xFF2E3440)
+                )
+            }
+            Spacer(modifier = Modifier.size(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+            ) {
+                Text(
+                    text = "Humidity: ${weatherInfo.humidity}%",
+                    fontSize = 20.sp,
+                    color = Color(0xFF2E3440)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Icon(
+                    modifier = Modifier.size(30.dp),
+                    painter = painterResource(id = R.drawable.humidity),
+                    contentDescription = "wind speed",
+                    tint = Color(0xFF2E3440)
+                )
+            }
             Spacer(modifier = Modifier.height(32.dp))
         }
 
@@ -140,8 +167,9 @@ private fun PreviewCardWeather() {
             windSpeed = 1.0,
             description = "test",
             iconWeather = "test",
-            today = "test",
-            city = "test"
+            today = "2024-01-01 ",
+            city = "test",
+            humidity = 15
         ),
         backgroundColor = Color.White,
         onClose = {}

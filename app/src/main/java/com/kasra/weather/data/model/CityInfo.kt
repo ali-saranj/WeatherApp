@@ -10,5 +10,6 @@ data class CityInfo(
     val windSpeed: Double,
     val description: String,
     val iconWeather: String,
-    val today: String
+    val today: String,
+    val humidity: Int
 )

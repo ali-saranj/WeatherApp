@@ -7,31 +7,31 @@ import javax.inject.Inject
 
 
 /**
- * Implementation of [IWeatherDatasource] that fetches weather data from the network using [IWeatherApi].
+ * Implementation of the IWeatherDatasource interface, responsible for fetching weather data from the API.
+ *
+ * @property api The IWeatherApi instance used to make network requests.
  */
-class IWeatherDatasourceImpl @Inject constructor(val api: IWeatherApi) : IWeatherDatasource {
+class IWeatherDatasourceImpl @Inject constructor(private val api: IWeatherApi) :
+    IWeatherDatasource {
 
     /**
-     * Retrieves weather data for the given latitude and longitude.
+     * Fetches weather data from the API and returns it wrapped in a Resource object.
      *
-     * @return A [Result] object wrapping either the [List of CityDto] on success or a [Throwable] on failure.
+     * @returnA Resource object containing either the list of CityDto objects on success or an error message on failure.
      */
     override suspend fun getWeatherData(): Resource<List<CityDto>> {
-        try {
+        return try {
             val response = api.getWeatherData()
-            return if (response.isSuccessful) {
-                Resource.Success(response.body()!!.list)// Consider handling potential null response body
+            if (response.isSuccessful) {
+                Resource.Success(response.body()!!.list) // Success with data
             } else {
-                return Resource.Error(
+                Resource.Error(
                     response.errorBody().toString()
-                ) // Consider more specific error handling
+                ) // Error with message from response body
             }
-        }catch (e: Exception){
-            e.printStackTrace()
-            return Resource.Error(
-                e.message.toString()
-            ) // Consider more specific error handling
+        } catch (e: Exception) {
+            e.printStackTrace() // Log the exception for debugging
+            Resource.Error(e.message.toString()) // Error with exception message
         }
-
     }
 }

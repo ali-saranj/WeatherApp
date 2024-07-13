@@ -22,6 +22,7 @@ fun CityDto.toCityInfo(): CityInfo {
         windSpeed = wind.speed,
         description = weather.first().description,
         today = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm").format(java.time.LocalDateTime.now()),
-        iconWeather = "https://openweathermap.org/img/wn/${weather.first().icon}@2x.png"
+        iconWeather = "https://openweathermap.org/img/wn/${weather.first().icon}@2x.png",
+        humidity = main.humidity
     )
 }

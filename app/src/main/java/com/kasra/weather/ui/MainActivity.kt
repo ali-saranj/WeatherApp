@@ -16,30 +16,20 @@
 
 package com.kasra.weather.ui
 
-import android.Manifest
-import android.content.pm.PackageManager
+
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.kasra.weather.data.location.LocationTracker
 import com.kasra.weather.ui.map.MapScreen
 import dagger.hilt.android.AndroidEntryPoint
 import com.kasra.weather.ui.theme.MyApplicationTheme
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
