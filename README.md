@@ -1,3 +1,4 @@
+![[Weather app.png]]
 # Weather App
 
 Weather android app built with Android Studio & Kotlin, using Clean Architecture, with Jetpack
