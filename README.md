@@ -23,6 +23,7 @@ WeatherApp is an Android application built using Jetpack Compose and follows the
 - Dagger - Hilt
 - Retrofit2
 - Repository Pattern
+- Room(offline mod)
 
 ## API
 
