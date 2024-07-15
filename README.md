@@ -1,4 +1,5 @@
-![[Weather app.png]]
+![alt text](Screenshot/Weather app.png)
+![[Screenshot/Weather app.png]]
 # Weather App
 
 Weather android app built with Android Studio & Kotlin, using Clean Architecture, with Jetpack
