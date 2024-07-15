@@ -83,7 +83,8 @@ fun CardWeather(
                 model = weatherInfo.iconWeather,
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(id = R.drawable.load),
-                contentDescription = weatherInfo.description
+                contentDescription = weatherInfo.description,
+                error = painterResource(id = R.drawable.load)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(

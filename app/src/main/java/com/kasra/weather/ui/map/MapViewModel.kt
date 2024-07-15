@@ -33,7 +33,6 @@ class MapViewModel
      *
      * @param intent The intent representing the action to be performed.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun handleIntent(intent: MapIntent) {
         when (intent) {
             is MapIntent.LoadListCityInfo -> loadListCityInfo()
@@ -59,7 +58,6 @@ class MapViewModel
     /**
      * Loads weather data for multiple cities and updates the state accordingly.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadListCityInfo() = viewModelScope.launch {
         _state.value = MapState(isLoading = true) // Set loading state
         repository.getWeatherData().collectLatest { resource ->

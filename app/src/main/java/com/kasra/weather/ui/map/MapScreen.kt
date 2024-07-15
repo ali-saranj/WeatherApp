@@ -27,7 +27,6 @@ import com.google.maps.android.compose.rememberMarkerState
 import com.kasra.weather.data.model.CityInfo
 import com.kasra.weather.ui.components.CardWeather
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MapScreen(
     viewModel: MapViewModel = hiltViewModel()
@@ -53,7 +52,10 @@ fun MapScreen(
 
         state.error != null -> {
             // Display an error message if an error occurred
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(text = "Error: ${state.error}")
             }
         }
@@ -87,7 +89,6 @@ fun MapScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "MapScreen")
 @Composable
 private fun PreviewMapScreen() {

@@ -15,26 +15,22 @@ import javax.inject.Inject
 
 /**
  * Implementation of the IWeatherRepository interface, responsible for providing weather data.
- * It interacts with the IWeatherDatasource to fetch data and transforms it into CityInfo objects.
- *
- * @property datasource The IWeatherDatasource instance used to fetch raw weather data.
+ * It interacts with the IWeatherDatasource to fetch data and emits it as a Flow of Resource objects.
+ * @property datasource The IWeatherDatasource instance used to fetch weather data.
  */
 class IWeatherRepositoryImpl @Inject constructor(private val datasource: IWeatherDatasourceImpl) :
     IWeatherRepository {
 
     /**
-     * Fetches weather data, transforms it into CityInfo objects, and emits it as a Flow of Resource objects.
-     *
+     * Fetches weather data from the datasource and emits it as a Flow of Resource objects.
      * @return A Flow of Resource objects containing either a list of CityInfo objects on success or an error message on failure.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeatherData(): Flow<Resource<List<CityInfo>>> =
         flow<Resource<List<CityInfo>>> {
-            val result = datasource.getWeatherData()
-            when (result) {
+            when (val result = datasource.getWeatherData()) {
                 is Resource.Success -> {
-                    // Transform CityDto objects to CityInfo objects and emit as Success
-                    emit(Resource.Success(result.data!!.map { it.toCityInfo() }))
+                    // Emit the list of CityInfo objects as Success
+                    emit(Resource.Success(result.data!!))
                 }
 
                 is Resource.Error -> {
